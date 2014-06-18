@@ -1,0 +1,15 @@
+core
+core.*
+*.html
+*~
+.#*
+\#*\#
+*.aux
+*.dvi
+*.log
+*.out
+*.ics
+*.pdf
+*.xml
+*.org-source
+*.toc

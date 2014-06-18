@@ -1,0 +1,23 @@
+* brukerMRI
+
+Python module to read in Bruker MRI files (parameter files, raw data,
+processed data). Reconstruction of the raw data is work in progress,
+as of know only the ~FLASH~ method is supported.
+
+[[file:/img/ROIs.PNG]]
+
+** Requirements
+The python module ~numpy~ is required (tested with version
+1.6.2). The code itself is written in python 2.7.
+
+** Running the example
++ Copy the files ~brukerMRI.py~ and ~example.py~ to a directory.
++ Switch to that directory and run the example from the shell using 
+#+begin_SRC shell
+python example.py
+#+end_SRC
+** Usage
+*** Installation
+Copy the file ~brukerMRI.py~ to your working directory or add it to PYTHONPATH.
+
+

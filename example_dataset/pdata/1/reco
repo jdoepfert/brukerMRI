@@ -1,0 +1,118 @@
+##TITLE=Parameter List
+##JCAMPDX=4.24
+##DATATYPE=Parameter Values
+##ORIGIN=Bruker BioSpin MRI GmbH
+##OWNER=imaging
+$$ Tue Nov  5 12:00:01 2013 CET (UT+1h)  imaging
+$$ /opt/data/imaging/nmr/jd_MultiSlicePhantom.kp1/400/pdata/1/reco
+##$RECO_mode=FT_MODE
+##$RecoAutoDerive=Yes
+##$RECO_inp_order=NO_REORDERING
+##$RECO_inp_size=( 2 )
+128 128
+##$RECO_ft_size=( 2 )
+128 128
+##$RECO_fov=( 2 )
+2.5 2.5
+##$RECO_size=( 2 )
+128 128
+$$ @vis= RECO_mode RecoAutoDerive RECO_inp_order RECO_ft_size RECO_fov
+##$RECO_offset=( 2, 3 )
+0 0 0 0 0 0
+##$RECO_regrid_mode=NO_REGRID
+##$RECO_regrid_offset=0
+##$RECO_ramp_gap=0
+##$RECO_ramp_time=0
+##$RECO_ne_mode=NO_NAV_DATA
+##$RECO_ne_dist=NeNoInterleave
+##$RECO_ne_dens=NeCorrPerScan
+##$RECO_ne_type=NAV_PHASE
+##$RECO_ne_vals=( 1, 2 )
+0 0
+##$RECO_bc_mode=( 2 )
+NO_BC NO_BC
+##$RECO_bc_start=( 2 )
+96 96
+##$RECO_bc_len=( 2 )
+32 32
+##$RECO_dc_offset=( 2 )
+0 0
+##$RECO_dc_divisor=1
+##$RECO_bc_coroff=( 2 )
+0 0
+##$RECO_qopts=( 2 )
+CONJ_AND_QNEG NO_QOPTS
+##$RECO_wdw_mode=( 2 )
+NO_WDW NO_WDW
+$$ @vis= RECO_size RECO_regrid_mode RECO_ne_mode RECO_bc_mode RECO_qopts
+##$RECO_lb=( 2 )
+-0.5 -0.5
+##$RECO_sw=( 2 )
+101010.101010101 1
+##$RECO_gb=( 2 )
+0.5 0.5
+##$RECO_sbs=( 2 )
+1 1
+##$RECO_tm1=( 2 )
+0.25 0.25
+##$RECO_tm2=( 2 )
+0.75 0.75
+##$RECO_ft_mode=( 2 )
+COMPLEX_FFT COMPLEX_FFT
+##$RECO_pc_mode=( 2 )
+NO_PC NO_PC
+##$RECO_pc_lin=( 2 )
+(0, 0) (0, 0)
+##$RECO_rotate=( 2, 3 )
+0 0 0 0.5 0.5 0.5
+##$RECO_ppc_mode=NO_PPC
+##$RECO_ref_image=0
+##$RECO_nr_supports=0.4
+##$RECO_sig_threshold=0.15
+##$RECO_ppc_degree=1
+##$RECO_ppc_coeffs=( 3, 2, 2 )
+0 0 0 0 0 0 0 0 0 0 0 0
+##$RECO_dc_elim=No
+$$ @vis= RECO_wdw_mode RECO_ft_mode RECO_pc_mode RECO_rotate RECO_ppc_mode
+##$RECO_transposition=( 3 )
+0 1 1
+##$RECO_image_type=MAGNITUDE_IMAGE
+##$RECO_image_threshold=0.15
+##$RECO_ir_scale=10
+##$RECO_wordtype=_16BIT_SGN_INT
+##$RECO_map_mode=ABSOLUTE_MAPPING
+$$ @vis= RECO_dc_elim RECO_transposition RECO_image_type RECO_wordtype
+##$RECO_map_range=( 2 )
+-2147483647 2147483647
+##$RECO_map_percentile=( 2 )
+1 99.99
+##$RECO_map_error=0.0025
+##$RECO_globex=( 3 )
+0 0 0
+##$RECO_minima=( 3 )
+0 0 0
+##$RECO_maxima=( 3 )
+32766 25645 27013
+##$RECO_map_min=( 3 )
+-177717 -177717 -177717
+##$RECO_map_max=( 3 )
+177717 177717 177717
+$$ @vis= RECO_map_mode RECO_globex RECO_minima RECO_maxima RECO_map_min
+##$RECO_map_offset=( 3 )
+0 0 0
+##$RECO_map_slope=( 3 )
+0.184377402067184 0.184377402067184 0.184377402067184
+##$RECO_byte_order=littleEndian
+##$RECO_time=( 24 )
+<11:59:49  5 Nov 2013>
+##$RECO_abs_time=1383649189
+$$ @vis= RECO_map_max RECO_map_offset RECO_map_slope RECO_byte_order RECO_time
+##$RECO_base_image_uid=( 65 )
+<2.16.756.5.5.100.1606610049.18824.1383649201.1>
+##$GS_reco_display=Yes
+$$ @vis= RECO_abs_time RECO_base_image_uid RecoRegridNGroup GS_reco_display
+##$GO_reco_display=Yes
+##$GO_reco_each_nr=No
+##$GO_max_reco_mem=0
+$$ @vis= RECO_GS GO_reco_display GO_reco_each_nr GO_max_reco_mem RECO_GO RECO
+##END=
