@@ -57,8 +57,8 @@ To display e.g. the echo time of the currently loaded experiment, type
 print Experiment.method["PVM_EchoTime"]
 #+end_SRC
 
-When an experiment is loaded with =bruker.ReadExperiment=, the
-parameter files as well as the raw and the processed data are read in.
+When an experiment is loaded with =bruker.ReadExperiment()=, the
+parameter files as well as the raw data and the processed data are read in.
 However, no reconstruction on the raw data is performed. This is
 described in the next section.
 
@@ -71,9 +71,20 @@ This will first call the function =GenerateKspace()=, which reorders
 the raw data to obtain a valid k-space. Then, the function
 =_ReconstructKspace()= is called, which decides, based on the
 experiment's method, which function has to be called to reconstruct
-the data properly.
+the data properly. The k-space and the reconstructed image data are
+then stored in the class attributes =k_data= and =reco_data=, respectively.
 
 Note that both =ReconstructKspace()= and =GenerateKspace()= can only
-be called, if the corresponding method is supported. Up to now, this
+be called if the corresponding method is supported. Up to now, this
 is only the case for the ~FLASH~ method and for the ~UFZ_CEST_RARE~
-method (ultrafast z-spectroscopy as described in [[doi:10.1002/cphc.201300888][this publication]]).
+method (ultrafast z-spectroscopy as described in [[http://onlinelibrary.wiley.com/doi/10.1002/cphc.201300888/abstract][this publication]]).
+
+*** Loading a parameter file
+
+Parameter files can also be loaded without loading the experiment by
+using the function =ReadParamFile=:
+#+begin_SRC python
+import BrukerMRI as bruker
+FilePath = "example_dataset/100/method"
+method_dict = bruker.ReadParamFile(FilePath)
+#+end_SRC

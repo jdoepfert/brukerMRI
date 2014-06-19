@@ -25,8 +25,8 @@ class BrukerData:
         self.reco_data = np.array([])
         self.reco_data_norm = np.array([]) # normalized reco
 
-        self.B0 = B0
-        self.GyroRatio = 0
+        self.B0 = B0 # only needed for UFZ method
+        self.GyroRatio = 0 # only needed for UFZ method
         self.ConvFreqsFactor = 0 # reference to convert Hz <--> ppm
         self.path = path
         self.ExpNum = ExpNum
