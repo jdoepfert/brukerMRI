@@ -1,23 +1,79 @@
 * brukerMRI
 
 Python module to read in Bruker MRI files (parameter files, raw data,
-processed data). Reconstruction of the raw data is work in progress,
-as of know only the ~FLASH~ method is supported.
+processed data). Reconstruction of the raw data is currently only
+supported for the ~FLASH~ method.
 
 [[file:/img/brukerMRI.PNG]]
 
 ** Requirements
 The python module ~numpy~ is required (tested with version
-1.6.2). The code itself is written in python 2.7.
+1.6.2). The code itself is designed for python 2.7.
 
 ** Running the example
-+ Copy the files ~brukerMRI.py~ and ~example.py~ to a directory.
++ Copy the files ~brukerMRI.py~, ~example.py~ and the folder
+  ~example_dataset~ into a directory.
 + Switch to that directory and run the example from the shell using 
 #+begin_SRC shell
 python example.py
 #+end_SRC
 ** Usage
 *** Installation
-Copy the file ~brukerMRI.py~ to your working directory or add it to PYTHONPATH.
+Copy the file ~brukerMRI.py~ to your working directory or add it to
+PYTHONPATH.
 
+*** Loading a MRI experiment
+Import the brukerMRI module with the statement
+#+begin_SRC python
+import BrukerMRI as bruker
+#+end_SRC
 
+Bruker Paravision stores the MRI experiments in separate folders, which
+are consecutively numbered. To load an experiment, specify both the
+main folder, and the experiment number, e.g.
+
+#+begin_SRC python
+MainDir = "/opt/data/usr/nmr/exp1/"
+ExpNum = 100
+Experiment = bruker.ReadExperiment(MainDir, ExpNum)
+#+end_SRC
+
+=Experiment= is now an instance of the class =BrukerData=. The most
+important attributes of that class are listed below.
+
+|-------------+-------------+-----------------------------------|
+| Attribute   | Type        | Description                       |
+|-------------+-------------+-----------------------------------|
+| =method=    | dict        | method parameters                 |
+| =acqp=      | dict        | acquisition parameters            |
+| =reco=      | dict        | reco parameters                   |
+| =raw_fid=   | numpy array | complex raw data                  |
+| =proc_data= | numpy array | data as processed in Paravision   |
+| =k_data=    | numpy array | complex k-space data              |
+| =reco_data= | numpy array | complex reconstruction of k-space |
+
+To display e.g. the echo time of the currently loaded experiment, type
+#+begin_SRC python
+print Experiment.method["PVM_EchoTime"]
+#+end_SRC
+
+When an experiment is loaded with =bruker.ReadExperiment=, the
+parameter files as well as the raw and the processed data are read in.
+However, no reconstruction on the raw data is performed. This is
+described in the next section.
+
+*** Reconstruction of an MRI experiment
+To reconstruct the raw data of an experiment, simply type
+#+begin_SRC python
+Experiment.ReconstructKspace()
+#+end_SRC
+This will first call the function =GenerateKspace()=, which reorders
+the raw data to obtain a valid k-space. Then, the function
+=_ReconstructKspace()= is called, which decides, based on the
+experiment's method, which function has to be called to reconstruct
+the data properly.
+
+Note that both =ReconstructKspace()= and =GenerateKspace()= can only
+be called, if the corresponding method is supported. Up to now, this
+is only the case for the ~FLASH~ method and for the ~UFZ_CEST_RARE~
+method (ultrafast z-spectroscopy as described in [[doi:10.1002/cphc.201300888][this publication]]).
