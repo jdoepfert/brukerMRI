@@ -9,6 +9,9 @@ reconstruct Bruker MRI data.
 
 import numpy as np
 
+# ***********************************************************
+#  class definition
+# ***********************************************************
 class BrukerData:
     """Class to store and process data of a Bruker MRI Experiment"""
     def __init__(self, path="", ExpNum=0, B0=9.4):
@@ -42,12 +45,11 @@ class BrukerData:
         else:
             raise NameError("Unknown method")
 
-        return self.k_data
 
     def ReconstructKspace(self, **kwargs):
-        """Reconstruct the kspace data. If it does not yet exist,
-        generate it from the raw fid.
-        Keyword arguments [**kwargs] can be supplied for some methods:
+        """Transform the kspace data to image space. If it does not yet exist,
+        generate it from the raw fid. Keyword arguments [**kwargs] can
+        be supplied for some methods:
 
         All methods:
         - KspaceCutoffIdx: list lines to be set to zero  in
@@ -71,9 +73,61 @@ class BrukerData:
         return self.reco_data
 
     def _ReconstructKspace_(self, **kwargs):
+        """Select which function to use for the reco, depending on the
+        method."""
 
         if self.method["Method"] == 'jd_UFZ_RAREst':
             self._Reco_UFZ_RARE(**kwargs)
+
+        elif (self.method["Method"] == 'FLASH' or 
+              self.method["Method"] == 'mic_flash'):
+            self. _Reco_FLASH(**kwargs)
+
+        else:
+            raise NameError("Unknown method")
+
+    # ***********************************************************
+    #  method specific reordering and reco functions  start here
+    # ***********************************************************   
+    def _GenKspace_FLASH(self):
+
+        complexValues = self.raw_fid
+  
+        NScans = (self.acqp["NI"]    # no. of images
+                  * self.acqp["NAE"] # no. of experiments
+                  * self.acqp["NA"]  # no. of averages
+                  * self.acqp["NR"])  # no. of repetitions
+    
+        Matrix = self.method["PVM_Matrix"]
+
+        kSpace = np.reshape(complexValues, (-1,Matrix[0]),
+                          order="F")
+        kSpace = np.reshape(kSpace, (-1, Matrix[0], Matrix[1]))
+        kSpace = np.transpose(kSpace, (1,2,0))
+        return kSpace
+
+    def _Reco_FLASH(self, **kwargs):
+        
+        k_data = self.k_data
+        reco_data = np.zeros(k_data.shape)
+
+        for i in range(0,self.k_data.shape[2]):
+            reco_data[:,:,i] = abs(fft_image(self.k_data[:,:,i]))
+        
+        self.reco_data = reco_data
+   
+
+    def _GenKspace_UFZ_RARE(self):
+
+        complexValues = self.raw_fid
+        complexValues = RemoveVoidEntries(complexValues,
+                                          self.acqp["ACQ_size"][0])
+        NEchoes = self.method["CEST_Number_Echoes"]
+        NPoints = self.method["CEST_Number_SatFreqs"]
+        NScans = self.method["PVM_NRepetitions"]
+
+        return np.reshape(complexValues, (NPoints, NEchoes, NScans),
+                          order="F")
 
     def _Reco_UFZ_RARE(self, **kwargs):
 
@@ -132,32 +186,11 @@ class BrukerData:
             self.reco_data_norm = np.divide(abs(self.reco_data[:,1::2]), 
                                             abs(self.reco_data[:,0::2]))
 
-    def _GenKspace_UFZ_RARE(self):
-
-        complexValues = self.raw_fid
-        complexValues = RemoveVoidEntries(complexValues,
-                                          self.acqp["ACQ_size"][0])
-        NEchoes = self.method["CEST_Number_Echoes"]
-        NPoints = self.method["CEST_Number_SatFreqs"]
-        NScans = self.method["PVM_NRepetitions"]
-
-        return np.reshape(complexValues, (NPoints, NEchoes, NScans),
-                          order="F")
-
-    def _GenKspace_FLASH(self):
-
-        complexValues = self.raw_fid
-        complexValues = RemoveVoidEntries(complexValues,
-                                          self.acqp["ACQ_size"][0])
-        NEchoes = self.method["CEST_Number_Echoes"]
-  
-        NScans = self.method["PVM_NRepetitions"]
-
-        return np.reshape(complexValues, (NPoints, NEchoes, NScans),
-                          order="F")
 
 
-
+# ***********************************************************
+#  Functions
+# ***********************************************************
 def ReadExperiment(path, ExpNum):
     """Read in a Bruker MRI Experiment. Returns raw data, processed 
     data, and method and acqp parameters in a dictionary.
@@ -230,6 +263,11 @@ def FFT_center(Kspace, sampling_rate=1, ax=0):
         np.fft.fftfreq(n, 1/float(sampling_rate)))
 
     return spectrum, freq_axis
+
+def fft_image(Kspace):
+    
+    return np.fft.fftshift(np.fft.fft2(Kspace))
+
 
 def RemoveVoidEntries(datavector, acqsize0):
     blocksize = int(np.ceil(float(acqsize0)/2/128)*128)
