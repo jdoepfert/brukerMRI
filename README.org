@@ -4,7 +4,7 @@ Python module to read in Bruker MRI files (parameter files, raw data,
 processed data). Reconstruction of the raw data is work in progress,
 as of know only the ~FLASH~ method is supported.
 
-[[file:/img/ROIs.PNG]]
+[[file:/img/brukerMRI.PNG]]
 
 ** Requirements
 The python module ~numpy~ is required (tested with version
