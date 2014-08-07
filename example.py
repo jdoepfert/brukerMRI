@@ -22,3 +22,5 @@ pl.imshow(abs(Experiment.reco_data[:,:,2]))
 pl.suptitle("MRI method: " + Experiment.method["Method"] + \
             ", Matrix: " + str(Experiment.method["PVM_Matrix"][0]) + \
             " x " + str(Experiment.method["PVM_Matrix"][1]))
+
+pl.show()
