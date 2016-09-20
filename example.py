@@ -14,14 +14,9 @@ Experiment.ReconstructKspace()
 
 # show the resulting images
 plt.figure()
-plt.subplot(131)
-plt.imshow(abs(Experiment.reco_data[:,:,0]))
-
-plt.subplot(132)
-plt.imshow(abs(Experiment.reco_data[:,:,1]))
-
-plt.subplot(133)
-plt.imshow(abs(Experiment.reco_data[:,:,2]))
+for i in range(3):
+	plt.subplot(1,3,i+1)
+	plt.imshow(abs(Experiment.reco_data[:,:,i]))
 
 plt.suptitle("MRI method: " + Experiment.method["Method"] + \
              ", Matrix: " + str(Experiment.method["PVM_Matrix"][0]) + \
