@@ -1,5 +1,9 @@
 import BrukerMRI as bruker
-import pylab as pl
+import matplotlib.pyplot as plt
+
+# Display defaults
+plt.rc('image', cmap='viridis', interpolation='nearest') # Display all images equally
+plt.rcParams['figure.figsize'] = (16, 5)  # Widescreen figures
 
 MainDir = "example_dataset/"
 ExpNum = 100
@@ -9,18 +13,13 @@ Experiment = bruker.ReadExperiment(MainDir, ExpNum)
 Experiment.ReconstructKspace()
 
 # show the resulting images
-pl.figure()
-pl.subplot(131)
-pl.imshow(abs(Experiment.reco_data[:,:,0]))
+plt.figure()
+for i in range(3):
+	plt.subplot(1,3,i+1)
+	plt.imshow(abs(Experiment.reco_data[:,:,i]))
 
-pl.subplot(132)
-pl.imshow(abs(Experiment.reco_data[:,:,1]))
+plt.suptitle("MRI method: " + Experiment.method["Method"] + \
+             ", Matrix: " + str(Experiment.method["PVM_Matrix"][0]) + \
+             " x " + str(Experiment.method["PVM_Matrix"][1]))
 
-pl.subplot(133)
-pl.imshow(abs(Experiment.reco_data[:,:,2]))
-
-pl.suptitle("MRI method: " + Experiment.method["Method"] + \
-            ", Matrix: " + str(Experiment.method["PVM_Matrix"][0]) + \
-            " x " + str(Experiment.method["PVM_Matrix"][1]))
-
-pl.show()
+plt.show()
